@@ -1,7 +1,7 @@
 const TabelaFornecedor = require("./TabelaFornecedor")
 
 class Fornecedor {
-    constructor ({ id, empresa, email, categoria, dataCriacao, dataAtualizacao, versao }) {
+    constructor({ id, empresa, email, categoria, dataCriacao, dataAtualizacao, versao }) {
         this.id = id
         this.empresa = empresa
         this.email = email
@@ -11,7 +11,7 @@ class Fornecedor {
         this.versao = versao
     }
 
-    async criar () {
+    async criar() {
         const resultado = await TabelaFornecedor.inserir({
             empresa: this.empresa,
             email: this.email,
@@ -21,6 +21,35 @@ class Fornecedor {
         this.dataCriacao = resultado.dataCriacao
         this.dataAtualizacao = resultado.dataAtualizacao
         this.versao = resultado.versao
+    }
+
+    async carregar() {
+        const resultado = await TabelaFornecedor.pegarPorId(this.id)
+        this.empresa = resultado.empresa
+        this.email = resultado.email
+        this.categoria = resultado.categoria
+        this.dataCriacao = resultado.dataCriacao
+        this.dataAtualizacao = resultado.dataAtualizacao
+        this.versao = resultado.versao
+    }
+
+    async atualizar() {
+        await TabelaFornecedor.pegarPorId(this.id)
+        const campos = ["empresa", "email", "categoria"]
+        const dadosParaAtualizar = {}
+
+        campos.forEach((campo) => {
+            const valor = this[campo]
+            if(typeof valor === "string" && valor.length > 0){
+                dadosParaAtualizar[campo] = valor
+            }
+        })
+
+        if (Object.keys(dadosParaAtualizar).length === 0){
+            throw new Error("Não foram recebidos dados válidos para atualizar fornecedor!")
+        }
+
+        await TabelaFornecedor.atualizar(this.id, dadosParaAtualizar)
     }
 }
 
