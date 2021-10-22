@@ -17,7 +17,7 @@ class Produto {
             throw new Error("O campo titulo está inválido")
         }
 
-        if(typeof this.preco !== "number" || this.preco <= 0){
+        if (typeof this.preco !== "number" || this.preco <= 0) {
             throw new Error("O campo preco está inválido")
         }
     }
@@ -39,6 +39,16 @@ class Produto {
 
     apagar() {
         return Tabela.remover(this.id, this.fornecedor)
+    }
+
+    async carregar() {
+        const produto = await Tabela.pegarPorId(this.id, this.fornecedor)
+        this.titulo = produto.titulo
+        this.preco = produto.preco
+        this.estoque = produto.estoque
+        this.dataCriacao = produto.dataCriacao
+        this.dataAtualizacao = produto.dataAtualizacao
+        this.versao = produto.versao
     }
 }
 
