@@ -1,3 +1,6 @@
+//DAO
+
+const { atualizar } = require("../TabelaFornecedor")
 const Modelo = require("./ModeloTabelaProduto")
 
 module.exports = {
@@ -5,7 +8,8 @@ module.exports = {
         return Modelo.findAll({
             where: {
                 fornecedor: idFornecedor
-            }
+            },
+            raw: true
         })
     },
 
@@ -31,10 +35,19 @@ module.exports = {
             raw: true
         })
 
-        if(!encontrado){
+        if (!encontrado) {
             throw new Error("Produto não encontrado!")
         }
         return encontrado
+    },
+
+    atualizar(dadosDoProduto, dadosParaAtualizar) {
+        return Modelo.update(
+            dadosParaAtualizar,
+            {
+                where: dadosDoProduto
+            }
+        )
     }
 
 }
