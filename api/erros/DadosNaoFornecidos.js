@@ -1,5 +1,5 @@
 class DadosNaoFornecidos extends Error {
-    constructor(){
+    constructor() {
         super("Não foram recebidos dados válidos para atualizar fornecedor!")
         this.name = "DadosNaoFornecidos"
         this.idErro = 2
