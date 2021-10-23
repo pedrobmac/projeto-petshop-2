@@ -1,7 +1,7 @@
 //DAO
 
-const { atualizar } = require("../TabelaFornecedor")
 const Modelo = require("./ModeloTabelaProduto")
+const instancia = require("../../../banco-de-dados")
 
 module.exports = {
     listar(idFornecedor) {
@@ -48,6 +48,22 @@ module.exports = {
                 where: dadosDoProduto
             }
         )
+    },
+
+    subtrair(idProduto, idFornecedor, campo, quantidade) {
+        return instancia.transaction(async transacao => {
+            const produto = await Modelo.findOne({
+                where: {
+                    id: idProduto,
+                    fornecedor: idFornecedor
+                }
+            })
+
+            produto[campo] = quantidade
+            await produto.save()
+
+            return produto
+        })
     }
 
 }
