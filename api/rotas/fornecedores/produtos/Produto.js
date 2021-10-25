@@ -1,3 +1,5 @@
+const CampoInvalido = require("../../../erros/CampoInvalido")
+const DadosNaoFornecidos = require("../../../erros/DadosNaoFornecidos")
 const Tabela = require("./TabelaProduto")
 
 class Produto {
@@ -14,11 +16,11 @@ class Produto {
 
     validar() {
         if (typeof this.titulo !== "string" || this.titulo.length === 0) {
-            throw new Error("O campo titulo está inválido")
+            throw new CampoInvalido("titulo")
         }
 
         if (typeof this.preco !== "number" || this.preco <= 0) {
-            throw new Error("O campo preco está inválido")
+            throw new CampoInvalido("preco")
         }
     }
 
@@ -66,7 +68,7 @@ class Produto {
         }
 
         if (Object.keys(dadosParaAtualizar).length === 0){
-            throw new Error("Não foram passados válidos para atualizar")
+            throw new DadosNaoFornecidos()
         }
 
         return Tabela.atualizar(

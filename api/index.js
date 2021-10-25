@@ -12,6 +12,11 @@ const app = express()
 
 app.use(bodyParser.json())
 
+app.use((requisicao, resposta, proximo) => {
+    resposta.set("X-Powered-By", "Gatito Petshop")
+    proximo()
+  })
+
 app.use((req, res, proximo) => {
     let formatoRequisitado = req.header("Accept")
 
